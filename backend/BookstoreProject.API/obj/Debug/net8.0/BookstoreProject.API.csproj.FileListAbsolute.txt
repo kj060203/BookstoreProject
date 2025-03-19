@@ -68,3 +68,4 @@ C:\Users\katej\OneDrive\Desktop\BookstoreProject\backend\BookstoreProject.API\ob
 C:\Users\katej\OneDrive\Desktop\BookstoreProject\backend\BookstoreProject.API\obj\Debug\net8.0\BookstoreProject.API.pdb
 C:\Users\katej\OneDrive\Desktop\BookstoreProject\backend\BookstoreProject.API\obj\Debug\net8.0\BookstoreProject.API.genruntimeconfig.cache
 C:\Users\katej\OneDrive\Desktop\BookstoreProject\backend\BookstoreProject.API\obj\Debug\net8.0\ref\BookstoreProject.API.dll
+C:\Users\katej\OneDrive\Desktop\BookstoreProject\backend\BookstoreProject.API\obj\Debug\net8.0\BookstoreProject.API.sourcelink.json
