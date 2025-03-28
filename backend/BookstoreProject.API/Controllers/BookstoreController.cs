@@ -17,7 +17,7 @@ namespace BookstoreProject.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get(int pageSize = 5, int pageNum = 1, bool isSorted = false)
+        public IActionResult Get(int pageSize = 5, int pageNum = 1, bool isSorted = false, [FromQuery] List<string>? category = null)
         {
             var query = _context.Books.AsQueryable();
 
@@ -27,14 +27,31 @@ namespace BookstoreProject.API.Controllers
                 query = query.OrderBy(b => b.Title); // Sorting by Title (or project name)
             }
 
+            // Apply filtering by category if category is not null
+            if (category != null && category.Any())
+            {
+                query = query.Where(b => category.Contains(b.Category));
+            }
+
+            var totalNumBooks = query.Count();
+
             var something = query
                 .Skip((pageNum - 1) * pageSize)
                 .Take(pageSize)
                 .ToList();
 
-            var totalNumBooks = _context.Books.Count();
-
             return Ok(new { something, totalNumBooks });
         }
+            [HttpGet("GetBookTypes")]
+
+    public IActionResult GetBookTypes ()
+    {
+        var bookTypes = _context.Books
+        .Select(b => b.Category)
+        .Distinct()
+        .ToList();
+        
+        return Ok(bookTypes);
+    }
     }
 }

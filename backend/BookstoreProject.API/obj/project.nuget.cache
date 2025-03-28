@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "0klSw4MrC+Q=",
+  "dgSpecHash": "8glz29sH7HM=",
   "success": true,
-  "projectFilePath": "C:\\Users\\katej\\OneDrive\\Desktop\\BookstoreProject\\backend\\BookstoreProject.API\\BookstoreProject.API.csproj",
+  "projectFilePath": "C:\\Users\\katej\\OneDrive\\Desktop\\BookstoreProject\\backend\\BookStoreProject.API\\BookstoreProject.API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\katej\\.nuget\\packages\\microsoft.data.sqlite.core\\8.0.14\\microsoft.data.sqlite.core.8.0.14.nupkg.sha512",
     "C:\\Users\\katej\\.nuget\\packages\\microsoft.entityframeworkcore\\8.0.14\\microsoft.entityframeworkcore.8.0.14.nupkg.sha512",
