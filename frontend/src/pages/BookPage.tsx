@@ -1,3 +1,4 @@
+// src/pages/BookPage.tsx
 import '../App.css';
 import BookList from '../components/BookList';
 import CategoryFilter from '../components/CategoryFilter';
@@ -8,7 +9,9 @@ function BookPage() {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
   return (
-    <div className="container">
+    <div className="container-fluid">
+      {' '}
+      {/* Changed from "container" to "container-fluid" */}
       <WelcomeBanner />
       <div className="row">
         <div className="col-md-3">

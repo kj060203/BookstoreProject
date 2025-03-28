@@ -1,13 +1,15 @@
 import { useState, useEffect } from 'react';
-import './CategoryFilter.css';
+import './CategoryFilter.css'; // You might still have some custom styles here
+
+interface CategoryFilterProps {
+  selectedCategories: string[];
+  setSelectedCategories: (categories: string[]) => void;
+}
 
 function CategoryFilter({
   selectedCategories,
   setSelectedCategories,
-}: {
-  selectedCategories: string[];
-  setSelectedCategories: (categories: string[]) => void;
-}) {
+}: CategoryFilterProps) {
   const [categories, setCategories] = useState<string[]>([]);
 
   useEffect(() => {
@@ -34,24 +36,36 @@ function CategoryFilter({
   }
 
   return (
-    <div className="category-filter">
+    <div className="bg-light p-3 mb-3 rounded border">
+      {' '}
+      {/* Bootstrap background, padding, margin, rounded corners, border */}
       <h5> Book Types</h5>
       <div className="category-list">
-        {categories.map((category) => (
-          <div key={category} className="category-item">
-            <input
-              type="checkbox"
-              id={category}
-              name={category}
-              value={category}
-              className="category-checkbox"
-              onChange={handleCategoryChange}
-            />
-            <label htmlFor={category}>{category}</label>
-          </div>
-        ))}
+        <ul className="list-unstyled">
+          {' '}
+          {/* Bootstrap to remove default list styling */}
+          {categories.map((category) => (
+            <li key={category} className="form-check">
+              {' '}
+              {/* Bootstrap for consistent checkbox styling */}
+              <input
+                type="checkbox"
+                className="form-check-input" /* Bootstrap checkbox input */
+                id={category}
+                name={category}
+                value={category}
+                checked={selectedCategories.includes(category)}
+                onChange={handleCategoryChange}
+              />
+              <label className="form-check-label" htmlFor={category}>
+                {category}
+              </label>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );
 }
+
 export default CategoryFilter;
