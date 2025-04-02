@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { Book } from '../types/Book';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { fetchBooks } from '../api/BooksAPI';
+import Pagination from './Pagination';
 
 function BookList({ selectedCategories }: { selectedCategories: string[] }) {
   const [books, setBooks] = useState<Book[]>([]);
@@ -12,6 +14,8 @@ function BookList({ selectedCategories }: { selectedCategories: string[] }) {
   const [isSorted, setIsSorted] = useState<boolean>(false);
   const navigate = useNavigate();
   const { cart, addToCart } = useCart(); // Access both cart state and the addToCart function
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
   // Calculate cart summary
   const totalItems = Object.values(cart).reduce(
@@ -22,26 +26,40 @@ function BookList({ selectedCategories }: { selectedCategories: string[] }) {
     (sum, item) => sum + (item ? item.quantity * item.price : 0),
     0
   );
-
   useEffect(() => {
-    const fetchBooks = async () => {
-      const categoryParams = selectedCategories
-        .map((c) => `category=${encodeURIComponent(c)}`)
-        .join('&');
+    const loadBooks = async () => {
+      try {
+        setLoading(true);
+        const data = await fetchBooks(
+          page,
+          pageNum,
+          isSorted,
+          selectedCategories
+        );
 
-      const response = await fetch(
-        `https://localhost:5000/api/Bookstore?pageSize=${page}&pageNum=${pageNum}&isSorted=${isSorted}${
-          selectedCategories.length ? `&${categoryParams}` : ''
-        }`
-      );
-      const data = await response.json();
-      setBooks(data.something);
-      setTotalBooksdata(data.totalNumBooks);
-      setTotalPages(Math.ceil(data.totalNumBooks / page));
+        console.log('Fetched Data:', data); // Debugging output
+
+        if (!data || !data.books) {
+          console.error('API Response Structure:', data); // Log the response structure
+          throw new Error('Invalid data format from API');
+        }
+
+        setBooks(data.books);
+        setTotalBooksdata(data.totalNumBooks);
+        setTotalPages(Math.ceil(data.totalNumBooks / page));
+      } catch (error) {
+        console.error(error);
+        setError('Failed to fetch books. Please try again later.');
+      } finally {
+        setLoading(false);
+      }
     };
 
-    fetchBooks();
+    loadBooks();
   }, [page, pageNum, isSorted, selectedCategories]);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p className="text-red-500">{error}</p>;
 
   return (
     <>
@@ -58,75 +76,53 @@ function BookList({ selectedCategories }: { selectedCategories: string[] }) {
         <button onClick={() => navigate('/CartPage')}>View Cart</button>
       </div>
 
-      {books.map((b) => (
-        <div id="bookCard" className="card shadow" key={b.bookID}>
-          <h3>{b.title}</h3>
-          <div className="card-body">
-            <ul className="list-unstyled">
-              <li>
-                <strong>Author:</strong> {b.author}
-              </li>
-              <li>
-                <strong>Publisher:</strong> {b.publisher}
-              </li>
-              <li>
-                <strong>ISBN:</strong> {b.isbn}
-              </li>
-              <li>
-                <strong>Classification:</strong> {b.classification}
-              </li>
-              <li>
-                <strong>Category:</strong> {b.category}
-              </li>
-              <li>
-                <strong>Page Count:</strong> {b.pageCount}
-              </li>
-              <li>
-                <strong>Price:</strong> ${b.price}
-              </li>
-            </ul>
-            <button className="btn btn-success" onClick={() => addToCart(b)}>
-              Add to Cart
-            </button>
+      {books?.length > 0 ? (
+        books.map((b) => (
+          <div id="bookCard" className="card shadow" key={b.bookID}>
+            <h3>{b.title}</h3>
+            <div className="card-body">
+              <ul className="list-unstyled">
+                <li>
+                  <strong>Author:</strong> {b.author}
+                </li>
+                <li>
+                  <strong>Publisher:</strong> {b.publisher}
+                </li>
+                <li>
+                  <strong>ISBN:</strong> {b.isbn}
+                </li>
+                <li>
+                  <strong>Classification:</strong> {b.classification}
+                </li>
+                <li>
+                  <strong>Category:</strong> {b.category}
+                </li>
+                <li>
+                  <strong>Page Count:</strong> {b.pageCount}
+                </li>
+                <li>
+                  <strong>Price:</strong> ${b.price}
+                </li>
+              </ul>
+              <button className="btn btn-success" onClick={() => addToCart(b)}>
+                Add to Cart
+              </button>
+            </div>
           </div>
-        </div>
-      ))}
-
-      {/* Pagination */}
-      <button disabled={pageNum === 1} onClick={() => setPageNum(pageNum - 1)}>
-        Previous
-      </button>
-      {[...Array(totalPages).keys()].map((_, p) => (
-        <button
-          key={p + 1}
-          onClick={() => setPageNum(p + 1)}
-          disabled={pageNum === p + 1}
-        >
-          {p + 1}
-        </button>
-      ))}
-      <button
-        disabled={pageNum === totalPages}
-        onClick={() => setPageNum(pageNum + 1)}
-      >
-        Next
-      </button>
-
-      <br />
-      <label>
-        Results per page:
-        <select
-          value={page}
-          onChange={(p) => {
-            setPage(Number(p.target.value));
-            setPageNum(1);
-          }}
-        >
-          <option value="5">5</option>
-          <option value="10">10</option>
-          <option value="20">20</option>
-        </select>
-      </label>
+        ))
+      ) : (
+        <p>No books found.</p>
+      )}
+      <Pagination
+        currentPage={pageNum}
+        totalPages={totalPages}
+        pageSize={page}
+        onPageChange={setPageNum}
+        onPageSizeChange={(newSize) => {
+          setPage(newSize);
+          setPageNum(1);
+        }}
+      />
     </>
   );
 }
