@@ -1,6 +1,7 @@
 C:\Users\katej\OneDrive\Desktop\BookstoreProject\backend\BookstoreProject.API\publish\BookstoreProject.API.exe
 C:\Users\katej\OneDrive\Desktop\BookstoreProject\backend\BookstoreProject.API\publish\appsettings.Development.json
 C:\Users\katej\OneDrive\Desktop\BookstoreProject\backend\BookstoreProject.API\publish\appsettings.json
+C:\Users\katej\OneDrive\Desktop\BookstoreProject\backend\BookstoreProject.API\publish\Bookstore.sqlite
 C:\Users\katej\OneDrive\Desktop\BookstoreProject\backend\BookstoreProject.API\publish\BookstoreProject.API.dll
 C:\Users\katej\OneDrive\Desktop\BookstoreProject\backend\BookstoreProject.API\publish\BookstoreProject.API.deps.json
 C:\Users\katej\OneDrive\Desktop\BookstoreProject\backend\BookstoreProject.API\publish\BookstoreProject.API.runtimeconfig.json

@@ -17,7 +17,7 @@ export const fetchBooks = async (
     .join('&');
 
   const response = await fetch(
-    `https://localhost:5000/api/Bookstore?pageSize=${page}&pageNum=${pageNum}&isSorted=${isSorted}${
+    `https://bookstoreproject-katejeffries.azurewebsites.net/api/Bookstore?pageSize=${page}&pageNum=${pageNum}&isSorted=${isSorted}${
       selectedCategories.length ? `&${categoryParams}` : ''
     }`
   );
@@ -42,7 +42,7 @@ export const fetchBooks = async (
 export const addBook = async (book: Book): Promise<Book> => {
   try {
     const response = await fetch(
-      'https://localhost:5000/api/Bookstore/AddBook',
+      'https://bookstoreproject-katejeffries.azurewebsites.net/api/Bookstore/AddBook',
       {
         method: 'POST',
         headers: {
@@ -68,7 +68,7 @@ export const updateBook = async (
 ): Promise<Book> => {
   try {
     const response = await fetch(
-      `https://localhost:5000/api/Bookstore/UpdateBook/${bookID}`,
+      `https://bookstoreproject-katejeffries.azurewebsites.net/api/Bookstore/UpdateBook/${bookID}`,
       {
         method: 'PUT',
         headers: {
@@ -87,7 +87,7 @@ export const updateBook = async (
 export const deleteBook = async (title: string): Promise<void> => {
   try {
     const response = await fetch(
-      `https://localhost:5000/api/Bookstore/DeleteBook/${title}`,
+      `https://bookstoreproject-katejeffries.azurewebsites.net/api/Bookstore/DeleteBook/${title}`,
       {
         method: 'DELETE',
       }
